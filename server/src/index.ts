@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import {
   getUsers,
   createUser,
@@ -10,7 +11,7 @@ import {
 } from './storage';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -63,6 +64,14 @@ app.post('/api/lock/:username/toggle', (req: Request, res: Response) => {
   }
   const newState = toggleLock(username);
   res.json({ state: newState });
+});
+
+// Serve the Vite-built frontend
+app.use(express.static(path.join(__dirname, '..', '..', 'client', 'dist')));
+
+// Catch-all: send index.html for any non-API route (for client-side routing)
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'client', 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
