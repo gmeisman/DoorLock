@@ -100,6 +100,7 @@ export default function LockScreen({ username, onSwitchUser }: LockScreenProps) 
                     {ev.state.toUpperCase()}
                   </span>
                   <span style={styles.eventNote}>{ev.note}</span>
+                  <span style={styles.eventTimeMobile}>{formatTime(ev.timestamp)}</span>
                 </div>
                 <span style={styles.eventTime}>{formatTime(ev.timestamp)}</span>
               </li>
@@ -107,6 +108,18 @@ export default function LockScreen({ username, onSwitchUser }: LockScreenProps) 
           </ul>
         )}
       </section>
+
+      <style>{`
+        @media (max-width: 480px) {
+          .lock-padlock { width: 160px !important; height: 160px !important; }
+          .event-time-desktop { display: none !important; }
+          .event-time-mobile { display: block !important; }
+          .history-item { padding: 10px 12px !important; }
+        }
+        @media (min-width: 481px) {
+          .event-time-mobile { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
@@ -123,48 +136,56 @@ const styles: Record<string, React.CSSProperties> = {
   wrap: { display: 'flex', flexDirection: 'column', minHeight: '100vh' },
   header: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '16px 24px', borderBottom: '1px solid #1e2135', background: '#13151f',
+    flexWrap: 'wrap', gap: 8,
+    padding: '12px 16px', borderBottom: '1px solid #1e2135', background: '#13151f',
   },
   logo: { fontSize: 20, fontWeight: 700, color: '#e2e8f0', letterSpacing: -0.5 },
-  headerRight: { display: 'flex', alignItems: 'center', gap: 12 },
+  headerRight: { display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
   userBadge: {
     background: '#252836', color: '#94a3b8', border: '1px solid #3d4268',
-    borderRadius: 20, padding: '4px 14px', fontSize: 13,
+    borderRadius: 20, padding: '4px 12px', fontSize: 13,
+    maxWidth: '40vw', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
   },
   switchBtn: {
     background: 'transparent', color: '#64748b', border: '1px solid #2d3148',
-    borderRadius: 8, padding: '6px 14px', cursor: 'pointer', fontSize: 13,
-    transition: 'color 0.15s',
+    borderRadius: 8, padding: '6px 12px', cursor: 'pointer', fontSize: 13,
+    transition: 'color 0.15s', minHeight: 44,
   },
   main: {
     flex: 1, display: 'flex', flexDirection: 'column',
-    alignItems: 'center', justifyContent: 'center', gap: 16, padding: 32,
+    alignItems: 'center', justifyContent: 'center', gap: 16, padding: '24px 16px',
   },
   lockBtn: {
-    background: 'transparent', border: 'none', padding: 16,
+    background: 'transparent', border: 'none', padding: 8,
     borderRadius: '50%', transition: 'transform 0.1s',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    minWidth: 44, minHeight: 44,
   },
-  stateLabel: { fontSize: 28, fontWeight: 800, letterSpacing: 4 },
+  stateLabel: {
+    fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' as unknown as number,
+    fontWeight: 800, letterSpacing: 4,
+  },
   hint: { fontSize: 14, color: '#475569' },
   error: { color: '#ef4444', fontSize: 14 },
   historySection: {
     background: '#13151f', borderTop: '1px solid #1e2135',
-    padding: '24px 24px 32px',
+    padding: '20px 16px 28px',
   },
   historyTitle: {
     fontSize: 13, fontWeight: 600, color: '#475569',
-    textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16,
+    textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14,
   },
   empty: { color: '#475569', fontSize: 14 },
-  timeline: { listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 },
+  timeline: { listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 },
   timelineItem: {
-    display: 'flex', alignItems: 'center', gap: 14,
-    background: '#1a1d27', borderRadius: 10, padding: '12px 16px',
+    display: 'flex', alignItems: 'center', gap: 12,
+    background: '#1a1d27', borderRadius: 10, padding: '12px 14px',
     border: '1px solid #1e2135',
   },
   dot: { width: 10, height: 10, borderRadius: '50%', flexShrink: 0 },
-  eventInfo: { flex: 1, display: 'flex', flexDirection: 'column', gap: 2 },
-  eventState: { fontSize: 13, fontWeight: 700, letterSpacing: 1 },
-  eventNote: { fontSize: 13, color: '#64748b' },
-  eventTime: { fontSize: 12, color: '#475569', whiteSpace: 'nowrap' },
+  eventInfo: { flex: 1, display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 },
+  eventState: { fontSize: 12, fontWeight: 700, letterSpacing: 1 },
+  eventNote: { fontSize: 12, color: '#64748b' },
+  eventTime: { fontSize: 12, color: '#475569', whiteSpace: 'nowrap', flexShrink: 0 },
+  eventTimeMobile: { fontSize: 11, color: '#475569', marginTop: 2 },
 };

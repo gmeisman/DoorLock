@@ -16,10 +16,13 @@ export default function Padlock({ state, animating }: PadlockProps) {
   return (
     <svg
       viewBox="0 0 120 130"
-      width="220"
-      height="220"
       aria-label={`Door is ${state}`}
-      style={{ filter: `drop-shadow(0 0 18px ${glowColor})`, display: 'block' }}
+      style={{
+        filter: `drop-shadow(0 0 18px ${glowColor})`,
+        display: 'block',
+        width: 'clamp(140px, 40vw, 220px)',
+        height: 'clamp(140px, 40vw, 220px)',
+      }}
     >
       {/* Shackle */}
       <path
