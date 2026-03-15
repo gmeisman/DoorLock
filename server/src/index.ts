@@ -70,7 +70,7 @@ app.post('/api/lock/:username/toggle', (req: Request, res: Response) => {
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'dist')));
 
 // Catch-all: send index.html for any non-API route (for client-side routing)
-app.get('*', (_req, res) => {
+app.get('/{*path}', (_req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'client', 'dist', 'index.html'));
 });
 
